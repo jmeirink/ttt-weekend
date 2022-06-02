@@ -1,59 +1,77 @@
-// Call this `init` function when the app loads.
-init()
-
 /*-------------------------------- Constants --------------------------------*/
-const winningCombos = [];
+const winningCombos = [[0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 3, 6], [2, 5, 8], [1, 4, 7], [0, 4, 8], [2, 4, 6]]
 
 
 /*---------------------------- Variables (state) ----------------------------*/
-// Set the board variable to an array containing nine nulls to represent empty squares.
 let board = [null, null, null, null, null, null, null, null, null]
-
-// Set the turn to 1 - which will represent player X.
 let turn = 1
-
-// Set the winner to null.
 let winner = null
 
 
 /*------------------------ Cached Element References ------------------------*/
-// In a constant called squareEls, store the nine elements representing the squares on the page.
-const squareEls = document.querySelectorAll('#sq0', '#sq1', '#sq2', '#sq3', '#sq4', '#sq5', '#sq6', '#sq7', '#sq8')
-
-
-// In a constant called messageEl, store the element that displays the game’s status on the page.
-const messageEl = document.getElementById('message')
+const squareEls = document.querySelectorAll('.square')
+const messageEl = document.querySelector('#message')
 
 
 /*----------------------------- Event Listeners -----------------------------*/
-
-
+squareEls.forEach(function(square) {
+  square.addEventListener('click', handleClick)
+})
 
 /*-------------------------------- Functions --------------------------------*/
-// Create a function called `init`.
-// Call this `init` function when the app loads. (Line 2)
+init()
 function init() {
-  
-  
-  // Call a function called render at the end of the init function.
+ 
   render()
 }
 
-// Create a function called render
 function render() {
-  // Loop over board and for each element:
-  board.forEach((square, idx) => {
-    // Use the current index of the iteration to access the corresponding square in the squareEls array.
-    if (square === -1) {
-      squareEls[idx].textContent = 'O'
-    } else if (square === 1) {
+  board.forEach(function(square, idx) {
+    if (square === 1) {
       squareEls[idx].textContent = 'X'
+    } else if (square === -1) {
+      squareEls[idx].textContent = '0'
     } else {
       squareEls[idx].textContent = null
     }
-  })
 
-  // if (winner === null) {
-  //   return turn = 
-  // }
+    if (winner === null) {
+      messageEl.textContent = `It is the next player's turn.`
+    } else if (winner === 'T') {
+      messageEl.textContent = `It is a tie.`
+    } else {
+      messageEl.textContent = `We have a winner!`
+    }
+  })
 }
+
+function handleClick(evt) {
+  const sqIdx = parseInt(evt.target.id.slice(2))
+  console.log(sqIdx)
+  if (board[sqIdx] !== null){
+    return `Square has been taken`
+  } else if (winner !== null) {
+    return `Game is over`
+  }
+
+  board[sqIdx] = turn
+  turn = turn * -1
+
+  getWinner()
+  render()
+}
+
+function getWinner() {
+  for (let i = 0; i < winningCombos.length; i++) {
+    let sum = board[winningCombos[i][0]] + board[winningCombos[i][1]] + board[winningCombos[i][2]]
+    console.log(sum)
+    if (sum === 3) {
+      return 1
+    } else if (sum === -3) {
+      return -1
+    } else if (board.includes(null) === false) {
+      return 'T'
+    }
+  }
+}
+
