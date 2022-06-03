@@ -45,7 +45,7 @@ function render(){
   if (winner === null) {
     messageEl.textContent = `Player ${turn === 1 ? "X" : "0"}'s turn!`
   } else if (winner === 'T') {
-    messageEl.textContent = `Oh! It's a tie! Go Again!`
+    messageEl.textContent = `It's a tie! Go Again!`
   } else if (winner === 1 || winner === -1) {
     messageEl.textContent = `Player ${winner === 1 ? "X" : "0"} wins!`
   } 
