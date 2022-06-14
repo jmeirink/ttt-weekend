@@ -67,16 +67,14 @@ function handleClick(evt) {
 }
 
 function getWinner() {
-    for (let i = 0; i < winningCombos.length; i++) {
-      let sum = board[winningCombos[i][0]] + board[winningCombos[i][1]] + board[winningCombos[i][2]]
-      if (sum === 3) {
-          return winner = 1
-      } else  if (sum === -3) {
-          return winner = -1
-      } else if (board.includes(null) === false) {
-          return winner = 'T'
-      } else {
-          winner = null
-      }
-  }
+  for (let i = 0; i < winningCombos.length; i++) {
+    let sum = board[winningCombos[i][0]] + board[winningCombos[i][1]] + board[winningCombos[i][2]]
+    if (sum === 3) {
+      winner = 1
+    } else  if (sum === -3) {
+      winner = -1
+    } else if (!board.includes(null) && !winner) {
+      winner = 'T'
+    }
+}
 }
